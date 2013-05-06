@@ -44,7 +44,7 @@ var FileStore = function(options) {
                     return;
                 }
                 files.forEach(function(file) {
-                    fs.readFile(self.basePath + "/" + file, function(err, data) {
+                    fs.readFile(self.basePath + "/" + file, {encoding:'utf8'}, function(err, data) {
                         if (err) {
                             console.error(err);
                             return;
@@ -72,7 +72,7 @@ FileStore.prototype.get = function(sid, fn){
   sid = sid.replace(/\//g, "_");
   path.exists(self.basePath + "/" + sid, function(exists) {
       if (exists) {
-          fs.readFile(self.basePath + "/" + sid, function(err, data) {
+          fs.readFile(self.basePath + "/" + sid, {encoding:'utf8'}, function(err, data) {
               if (err) {
                   fn && fn(err);
               }
@@ -146,7 +146,7 @@ FileStore.prototype.all = function(fn){
         var arr = [];
         files.forEach(function(file) {
             // TODO: Make this async.
-            arr.push(JSON.parse(fs.readFileSync(self.basePath + "/" + file)));
+            arr.push(JSON.parse(fs.readFileSync(self.basePath + "/" + file, {encoding:'utf8'})));
         });
         fn && fn(arr);
     });
